@@ -10,7 +10,7 @@ export default function Dashboard() {
     <main className="w-screen h-[300vh]">
       <ThemeToggle />
       Hola mundo desde el Dashboard!
-      <Button onClick={() => signOut()}>Iniciar Sesión</Button>
+      <Button onClick={() => signOut()}>Cerrar Sesión</Button>
     </main>
   )
 }
