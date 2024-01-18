@@ -1,14 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Inter as FontSans } from "next/font/google"
 import { ThemeProvider } from '@/components/theme-provider'
-
-import { cn } from "@/lib/utils"
-
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
 
 export const metadata: Metadata = {
   title: 'Disgua',
@@ -24,10 +16,6 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
         suppressHydrationWarning={true}
       >
         <ThemeProvider
