@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {ThemeToggle} from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -45,7 +45,7 @@ function SignIn() {
       email: values.email,
       password: values.password,
       redirect: true,
-      callbackUrl: "/"
+      callbackUrl: "/dashboard"
     })
   }
 
@@ -53,10 +53,10 @@ function SignIn() {
     <div className='w-screen h-dvh flex'>
       <ThemeToggle />
       <div className='m-auto dark:bg-neutral-900 bg-white md:border shadow rounded-lg md:p-10 py-10 flex flex-col gap-5' suppressHydrationWarning={true}>
-          <div className="flex flex-col gap-3 items-center">
-              <h3 className="text-3xl font-bold text-center ">Login</h3>
-              <p className="text-muted-foreground max-w-[25ch] text-center">Ingresa tus credenciales en el formulario de abajo</p>
-          </div>
+        <div className="flex flex-col gap-3 items-center">
+          <h3 className="text-3xl font-bold text-center ">Login</h3>
+          <p className="text-muted-foreground max-w-[25ch] text-center">Ingresa tus credenciales en el formulario de abajo</p>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="p-5 flex flex-col gap-3">
             <FormField
