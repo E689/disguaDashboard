@@ -29,7 +29,7 @@ export const Accordion: React.FC<AccordionProps> = ({title, highlightedText, isO
         return (
             <>
                 <span>{beforeText}</span>
-                <span className='dark:bg-violet-800 bg-violet-500'>{textHighlighted}</span>
+                <span className='dark:  bg-violet-800 bg-violet-500'>{textHighlighted}</span>
                 <span>{afterText}</span>
             </>
         )

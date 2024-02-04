@@ -17,20 +17,21 @@ export const options: NextAuthOptions = {
         password: { label: "Contraseña", type: "password", placeholder: "********" },
       },
       async authorize(credentials, req) {
-          /**
+
         const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/login", {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: { "Content-Type": "application/json" }
         })
-        const user = await res.json()
+
+        const {user} = await res.json();
         
         // If no error and we have user data, return it
         if (res.ok && user) {
             return user
         }
-        */
 
+        /*
         // Bypass for auth for dev:
         const user: User = {
           id: "0",
@@ -38,9 +39,11 @@ export const options: NextAuthOptions = {
           email: "dev@e689gt.com",
         }
         console.log("Debug info: ", credentials, req)
-        return user
+        return user*/
+
+
         // Return null if user data could not be retrieved
-        // return null
+        return null
       }
     })
   ],
