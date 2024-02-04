@@ -18,36 +18,29 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials, req) {
 
-        const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/login", {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: { "Content-Type": "application/json" }
+        const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/login", {
+          method: 'POST',
+          body: JSON.stringify(credentials),
+          headers: { "Content-Type": "application/json" }
         })
 
-        const {user} = await res.json();
-        
+        const { user, message } = await res.json();
+
         // If no error and we have user data, return it
         if (res.ok && user) {
-            return user
+          return user
         }
 
-        /*
-        // Bypass for auth for dev:
-        const user: User = {
-          id: "0",
-          name: "Developer",
-          email: "dev@e689gt.com",
+        // Throw custom error message from server response.
+        if (!res.ok) {
+          throw new Error(message)
         }
-        console.log("Debug info: ", credentials, req)
-        return user*/
-
 
         // Return null if user data could not be retrieved
         return null
       }
     })
   ],
-  // secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/signin',
   }

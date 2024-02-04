@@ -1,11 +1,5 @@
-'use client'
-
-import {ThemeToggle} from "@/components/ThemeToggle"
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-    return (
-        <div>hola Mundo</div>
-    )
+    redirect("/auth/signin")
 }
