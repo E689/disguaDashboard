@@ -8,15 +8,10 @@ import { DayCalendarInfo, Schedule } from "@/components/ui/day-calendar-info";
 import { useEffect, useRef, useState } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { faCheck, faCircleNotch, faCog, faFilter, faSpinner, faSync } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Spinner from "@/components/misc/spinner";
+import Spinner from "@/components/misc/Spinner";
 
-// Dynamically import FontAwesomeIcon
-// import dynamic from 'next/dynamic';
-
-// Dynamically import FontAwesomeIcon
-// const FontAwesomeIcon = dynamic(() => import('@fortawesome/react-fontawesome').then(mod => mod.FontAwesomeIcon), { ssr: false });
 function filterDataByClientOrPhone(dayCalendars: Calendar, value: string) {
   return dayCalendars
     .filter(dayCalendar => {
@@ -43,6 +38,7 @@ export default function Dashboard() {
   const currentSearchedInput = useRef<string>('');
   const [typeSearch, setTypeSearch] = useState<'fecha' | 'paciente'>('fecha');
   const inputPlaceholder = typeSearch === 'fecha' ? 'Busca por dia' : 'Busca por numéro de paciente o teléfono';
+
   // I need this to only happen on the first render
   useEffect(() => {
     if (status !== 'success') return;
@@ -86,6 +82,7 @@ export default function Dashboard() {
 
   return (
     <main className="w-screen h-dvh">
+      {/** Separar layout del page */}
       <ThemeToggle />
       <div className="flex w-full h-full">
         <nav
@@ -100,6 +97,7 @@ export default function Dashboard() {
         </nav>
         <div className='flex flex-col gap-5 items-center w-full p-4'>
           <div className='flex gap-5 items-center'>
+            {/** Convertir acordeon a comp propio/reutilizable */}
             <Input onInput={filterData} className='w-[50ch]' placeholder={inputPlaceholder}></Input>
             {/* on click should display dropdown, idk if its better to use shadcdn component for this*/}
             <DropdownMenu>
@@ -124,45 +122,52 @@ export default function Dashboard() {
             </DropdownMenu>
           </div>
           {/* add a loading spinner*/}
-          {status === 'loading' && (
-            <Spinner />
-          )}
+          {
+            status === 'loading' && (
+              <Spinner />
+            )
+          }
           {status === 'error' && <div>{error?.name}</div>}
-          {status === 'success' && typeSearch === "fecha" && (
-            <div className='w-full overflow-y-scroll'>
-              {filteredDataByDate[currentSearchedInput.current]?.map((dayCalendar, index) => {
-                return (
-                  <Accordion highlightedText={currentSearchedInput.current} key={index}
-                    title={dayCalendar.date}>
-                    {dayCalendar.schedule
-                      .map((schedule, i) => (
-                        <DayCalendarInfo key={i} schedule={schedule}></DayCalendarInfo>))}
-                  </Accordion>
-                )
-              })}
-            </div>
-          )}
-
-          {status === 'success' && typeSearch === "paciente" && (
-            <div className='w-full overflow-y-scroll'>
-              {filteredDataByClient[currentSearchedInput.current]?.map((dayCalendar, index) => {
-                return (
-                  <Accordion isOpen={true} key={index} title={dayCalendar.date}>
-                    {dayCalendar.schedule.filter(scheduleDay => {
-                      if (!scheduleDay.client) return false;
-                      // if the client name or phone includes the current searched input
-                      // return true
-                      return scheduleDay.client.name.toLowerCase().includes(currentSearchedInput.current.toLowerCase())
-                        || scheduleDay.client.phone.toLowerCase().includes(currentSearchedInput.current.toLowerCase())
-                    })
-                      .map((scheduleDay, i) => (
-                        <DayCalendarInfo highlightedText={currentSearchedInput.current} key={i}
-                          schedule={scheduleDay}></DayCalendarInfo>))}
-                  </Accordion>
-                )
-              })}
-            </div>
-          )}
+          {
+            status === 'success' && typeSearch === "fecha" && (
+              <div className='w-full overflow-y-scroll'>
+                {
+                  filteredDataByDate[currentSearchedInput.current]?.map((dayCalendar, index) => {
+                    return (
+                      <Accordion highlightedText={currentSearchedInput.current} key={index}
+                        title={dayCalendar.date}>
+                        {dayCalendar.schedule
+                          .map((schedule, i) => (
+                            <DayCalendarInfo key={i} schedule={schedule}></DayCalendarInfo>))}
+                      </Accordion>
+                    )
+                  })
+                }
+              </div>
+            )
+          }
+          {
+            status === 'success' && typeSearch === "paciente" && (
+              <div className='w-full overflow-y-scroll'>
+                {filteredDataByClient[currentSearchedInput.current]?.map((dayCalendar, index) => {
+                  return (
+                    <Accordion isOpen={true} key={index} title={dayCalendar.date}>
+                      {dayCalendar.schedule.filter(scheduleDay => {
+                        if (!scheduleDay.client) return false;
+                        // if the client name or phone includes the current searched input
+                        // return true
+                        return scheduleDay.client.name.toLowerCase().includes(currentSearchedInput.current.toLowerCase())
+                          || scheduleDay.client.phone.toLowerCase().includes(currentSearchedInput.current.toLowerCase())
+                      })
+                        .map((scheduleDay, i) => (
+                          <DayCalendarInfo highlightedText={currentSearchedInput.current} key={i}
+                            schedule={scheduleDay}></DayCalendarInfo>))}
+                    </Accordion>
+                  )
+                })
+                }
+              </div>
+            )}
         </div>
       </div>
     </main>

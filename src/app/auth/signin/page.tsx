@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { ThemeToggle } from "@/components/ThemeToggle";
-import Spinner from '@/components/misc/spinner'
+import Spinner from '@/components/misc/Spinner'
 
 const formSchema = z.object({
   email: z.string().email(),
