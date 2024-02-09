@@ -1,11 +1,6 @@
 'use client'
 
-export type Schedule = {
-    available: boolean,
-    timeStart: string,
-    timeEnd: string,
-    client?: { name: string, phone: '12345678' }
-}
+import {Schedule} from "@/app/types/types";
 
 type DayCalendarInfoProps = {
     schedule: Schedule

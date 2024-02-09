@@ -8,7 +8,7 @@ type FetchState<T> = {
   error: Error | null;
 };
 
-export function useFetch<T>(url: string): [FetchStatus, T | null, Error | null] {
+export function useFetchSchedule<T>(url: string): [FetchStatus, T | null, Error | null] {
   const [state, setState] = useState<FetchState<T>>({
     status: 'idle',
     data: null,
