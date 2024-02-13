@@ -29,7 +29,7 @@ export const Accordion: React.FC<AccordionProps> = ({title, highlightedText, isO
         return (
             <>
                 <span>{beforeText}</span>
-                <span className='dark:  bg-violet-800 bg-violet-500'>{textHighlighted}</span>
+                <span className='dark:bg-violet-800 bg-violet-500'>{textHighlighted}</span>
                 <span>{afterText}</span>
             </>
         )
@@ -37,15 +37,19 @@ export const Accordion: React.FC<AccordionProps> = ({title, highlightedText, isO
 
     const toggleOpen = () => setIsOpen(!isOpen);
 
+    const classes = 'border rounded-lg shadow-lg p-4'
+
     return (
-        <div onClick={toggleOpen} className="border rounded-lg shadow-lg p-4 mb-4">
-            <div className="flex justify-between">
-                <h2 className="text-xl font-bold mb-2">{getText(title)}</h2> {/* Muestra la fecha */}
-                <button className="text-xl">
-                    <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown}></FontAwesomeIcon>
-                </button>
+        <div className={`mb-4 ${isOpen && classes}`}>
+            <div onClick={toggleOpen} className={`${!isOpen && classes} ${isOpen && 'mb-4'}`}>
+                <div className="flex justify-between">
+                    <h2 className="text-xl font-bold mb-2" onClick={(e) => e.stopPropagation()}>{getText(title)}</h2> {/* Muestra la fecha */}
+                    <button className="text-xl">
+                        <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown}></FontAwesomeIcon>
+                    </button>
+                </div>
             </div>
-            {isOpen && <div className="mt-4">{children}</div>}
+            {isOpen && <div className={`${!isOpen && classes}`}>{children}</div>}
         </div>
     );
 };

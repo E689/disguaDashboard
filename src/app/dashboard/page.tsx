@@ -8,7 +8,11 @@ import Spinner from "@/components/misc/Spinner";
 import {SearchBar} from "@/components/ui/search-bar";
 import {Calendar, Schedule} from "@/app/types/types";
 import {useFilterData} from "@/hooks/useFilterData";
-import {DropdownMenuItems} from "@/app/dashboard/dropdown-items";
+import {DropdownMenuItems} from "@/app/dashboard/_components/dropdown-items";
+import {buttonVariants} from "@/components/ui/button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function Dashboard() {
     const [status, dayCalendars, error] = useFetchSchedule<Calendar>('anyURL');
@@ -20,6 +24,15 @@ export default function Dashboard() {
         filteredDataByClient,
         currentSearchedInput
     } = useFilterData(dayCalendars!, status, typeSearch);
+
+    const isMatch = (scheduleDay: Schedule) => {
+        if (!scheduleDay.client) return false;
+        // if the client name or phone includes the current searched input
+        // return true
+        return scheduleDay.client.name.toLowerCase().includes(currentSearchedInput.toLowerCase())
+            || scheduleDay.client.phone.toLowerCase().includes(currentSearchedInput.toLowerCase())
+    }
+
 
     const renderDayCalendarInfo = (isPacient: boolean) => {
         const Component = (schedule: Schedule, i: number) => {
@@ -36,6 +49,11 @@ export default function Dashboard() {
             <SearchBar onInput={filterData} placeholder={inputPlaceholder}
                        dropdownElements={<DropdownMenuItems typeSearch={typeSearch}
                                                             setTypeSearch={setTypeSearch}></DropdownMenuItems>}></SearchBar>
+
+            <div className="w-full flex justify-end px-10">
+                <Link href='/dashboard/new' className={`${buttonVariants({variant: 'default'})} font-semibold flex gap-3`}><span>Crear Cita</span><FontAwesomeIcon
+                    icon={faPlus}></FontAwesomeIcon></Link>
+            </div>
             {status === 'loading' && <Spinner/>}
             {status === 'error' && <div>{error?.name}</div>}
             {
@@ -43,6 +61,7 @@ export default function Dashboard() {
                     <div className='w-full overflow-y-scroll'>
                         {
                             filteredDataByDate[currentSearchedInput]?.map((dayCalendar, index) => {
+
                                 return (
                                     <Accordion highlightedText={currentSearchedInput} key={index}
                                                title={dayCalendar.date}>
@@ -57,20 +76,15 @@ export default function Dashboard() {
             {
                 status === 'success' && typeSearch === "paciente" && (
                     <div className='w-full overflow-y-scroll'>
-                        {filteredDataByClient[currentSearchedInput]?.map((dayCalendar, index) => {
-                            return (
-                                <Accordion isOpen={true} key={index} title={dayCalendar.date}>
-                                    {dayCalendar.schedule.filter(scheduleDay => {
-                                        if (!scheduleDay.client) return false;
-                                        // if the client name or phone includes the current searched input
-                                        // return true
-                                        return scheduleDay.client.name.toLowerCase().includes(currentSearchedInput.toLowerCase())
-                                            || scheduleDay.client.phone.toLowerCase().includes(currentSearchedInput.toLowerCase())
-                                    })
-                                        .map(renderDayCalendarInfo(true))}
-                                </Accordion>
-                            )
-                        })}
+                        {filteredDataByClient[currentSearchedInput]?.filter(({schedule}) => schedule.some(isMatch))
+                            .map((dayCalendar, index) => {
+                                return (
+                                    <Accordion isOpen={true} key={index} title={dayCalendar.date}>
+                                        {dayCalendar.schedule.filter(isMatch)
+                                            .map(renderDayCalendarInfo(true))}
+                                    </Accordion>
+                                )
+                            })}
                     </div>
                 )}
         </div>
