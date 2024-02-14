@@ -43,8 +43,8 @@ export const Accordion: React.FC<AccordionProps> = ({title, highlightedText, isO
         <div className={`mb-4 ${isOpen && classes}`}>
             <div onClick={toggleOpen} className={`${!isOpen && classes} ${isOpen && 'mb-4'}`}>
                 <div className="flex justify-between">
-                    <h2 className="text-xl font-bold mb-2" onClick={(e) => e.stopPropagation()}>{getText(title)}</h2> {/* Muestra la fecha */}
-                    <button className="text-xl">
+                    <h2 className="text-lg font-bold mb-2" onClick={(e) => e.stopPropagation()}>{getText(title)}</h2> {/* Muestra la fecha */}
+                    <button className="text-lg">
                         <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown}></FontAwesomeIcon>
                     </button>
                 </div>

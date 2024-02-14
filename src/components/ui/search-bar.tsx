@@ -13,7 +13,7 @@ type SearchBarProps = {
 
 export const SearchBar = ({onInput, placeholder, dropdownElements}: SearchBarProps) => {
     return (
-        <div className='flex gap-5 items-center w-full md:w-auto mt-12'>
+        <div className='flex gap-5 items-center w-5/6 md:w-3/4 md:w-auto'>
             {/** Convertir acordeon a comp propio/reutilizable */}
             <Input onInput={onInput} className='w-full md:w-[50ch]' placeholder={placeholder}></Input>
             {/* on click should display dropdown, idk if its better to use shadcdn component for this*/}
