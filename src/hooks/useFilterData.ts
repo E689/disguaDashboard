@@ -44,7 +44,7 @@ export const useFilterData = (dayCalendars: Calendar, status: string, typeSearch
         // filter data
         setFilteredDataByDate({[currentSearchedInput.current]: filterDataByDate(dayCalendars!, currentSearchedInput.current)});
         setFilteredDataByClient({[currentSearchedInput.current]: filterDataByClientOrPhone(dayCalendars!, currentSearchedInput.current)});
-    }, [status]);
+    }, [status, dayCalendars]);
 
     return {filterData, filteredDataByClient, filteredDataByDate, currentSearchedInput: currentSearchedInput.current};
 }
